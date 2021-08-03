@@ -1,55 +1,64 @@
 //Got starter code from thursday/friday demo recording
 
 
-fallbackLocation ={latitude:-37.871972, longitude:175.689232};  // Hobbiton
+const fallbackLocation ={latitude:-37.871972, longitude:175.689232};  // Hobbiton
 let photosArray =[];
 let currentPhoto = 0;
 let container = document.getElementById("photoContainer")
-
-let x = 0; 
-
-
-function assembleImageSourceURL (photoObj) {
-    return "https://farm" + photoObj.farm +
-            ".staticflickr.com/" + photoObj.server +
-            "/" + photoObj.id + "_" + photoObj.secret + ".jpg";
-}
-// console.log(assembleImageSourceURL(dogs))
-// const imageUrl = assembleImageSourceURL(response.photos.photo[0]);
-
-let button = document.getElementById("button");
-
-button.addEventListener("click", nextPhoto)
 let photoObj;
-function nextPhoto (){
+let newPhoto;
+var intervalId = null
 
-	if(currentPhoto < photosArray.length){
-		photoObj = photosArray[currentPhoto]
-		assembleImageSourceURL(photoObj)
-		console.log(assembleImageSourceURL(photoObj))
-		currentPhoto +=1
-	}
-console.log(photoObj)	
+
+function assembleImageSourceURL (photo) {
+    return `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`;
 }
-console.log(currentPhoto)
-console.log(photoObj)
+
+let startBtn = document.getElementById("start");
+let stopBtn =document.getElementById("stop")
+
+startBtn.onclick = startInterval
+let g;
+function startInterval() {
+	g = setInterval(function(){
+		if(currentPhoto < 5){
+		currentPhoto +=1
+		console.log("hello")
+		}else {
+			clearInterval(intervalId)
+			console.log("goodbye")
+			currentPhoto = 0
+		}
+		}, 1000)
+	}
+
+
+stopBtn.onclick =stopInterval
+function stopInterval(){
+	clearInterval(g)
+	currentPhoto = 0
+	console.log(currentPhoto)
+} 
+
+	
+	
+		
+	
 
 function showPhotos (data) {
 	console.log(data)
 	photosArray = data.photos.photo
-	// photosArray.push(data.photos.photo);
     console.log(photosArray)
 
-	// Look at the first photo and turn it into an <img src=___> tag
 	console.log(assembleImageSourceURL(photosArray[currentPhoto]))
     let img = document.createElement("img")
-	console.log(photoObj)
     img.src = assembleImageSourceURL(photosArray[currentPhoto])
 
-	// Append the image tag to the page
     container.append(img)
 	
 }
+
+
 function processResponse (response) {
 	let responsePromise = response.json()
 	responsePromise.then(showPhotos)
