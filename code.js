@@ -3,7 +3,7 @@
 
 const fallbackLocation ={latitude:-37.871972, longitude:175.689232};  // Hobbiton
 let photosArray =[];
-let currentPhoto = 0;
+var currentPhoto = 0;
 let container = document.getElementById("photoContainer")
 let photoObj;
 let newPhoto;
@@ -20,24 +20,26 @@ let stopBtn =document.getElementById("stop")
 startBtn.onclick = startInterval
 let g;
 function startInterval() {
-	g = setInterval(function(){
-		if(currentPhoto < 5){
+			g = setInterval(function(){
 		currentPhoto +=1
-		console.log("hello")
-		}else {
-			clearInterval(intervalId)
-			console.log("goodbye")
-			currentPhoto = 0
-		}
-		}, 1000)
+		container.removeChild(container.firstChild)
+		let img = document.createElement("img")
+		img.src = assembleImageSourceURL(photosArray[currentPhoto])
+		container.append(img)
+
+        	},1000)
 	}
 
 
 stopBtn.onclick =stopInterval
 function stopInterval(){
 	clearInterval(g)
+	container.innerHTML = ""
 	currentPhoto = 0
 	console.log(currentPhoto)
+	let img = document.createElement("img")
+	img.src = assembleImageSourceURL(photosArray[currentPhoto])
+container.append(img)
 } 
 
 	
@@ -52,6 +54,7 @@ function showPhotos (data) {
 
 	console.log(assembleImageSourceURL(photosArray[currentPhoto]))
     let img = document.createElement("img")
+	img.setAttribute("id","imgOne")
     img.src = assembleImageSourceURL(photosArray[currentPhoto])
 
     container.append(img)
