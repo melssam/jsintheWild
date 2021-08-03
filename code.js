@@ -18,28 +18,29 @@ let startBtn = document.getElementById("start");
 let stopBtn =document.getElementById("stop")
 
 startBtn.onclick = startInterval
-let g;
+let playImages;
 function startInterval() {
-			g = setInterval(function(){
+	
+		playImages = setInterval(function(){
+			if(currentPhoto < 4){
 		currentPhoto +=1
 		container.removeChild(container.firstChild)
 		let img = document.createElement("img")
 		img.src = assembleImageSourceURL(photosArray[currentPhoto])
 		container.append(img)
-
-        	},1000)
+			}
+        	},3000)
 	}
 
 
 stopBtn.onclick =stopInterval
 function stopInterval(){
-	clearInterval(g)
+	clearInterval(playImages)
 	container.innerHTML = ""
 	currentPhoto = 0
-	console.log(currentPhoto)
 	let img = document.createElement("img")
 	img.src = assembleImageSourceURL(photosArray[currentPhoto])
-container.append(img)
+    container.append(img)
 } 
 
 	
@@ -48,11 +49,7 @@ container.append(img)
 	
 
 function showPhotos (data) {
-	console.log(data)
 	photosArray = data.photos.photo
-    console.log(photosArray)
-
-	console.log(assembleImageSourceURL(photosArray[currentPhoto]))
     let img = document.createElement("img")
 	img.setAttribute("id","imgOne")
     img.src = assembleImageSourceURL(photosArray[currentPhoto])
